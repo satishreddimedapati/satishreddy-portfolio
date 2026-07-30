@@ -111,7 +111,7 @@ import { PortfolioDataService } from '../../core/services/portfolio-data.service
               <div class="social-mini-links">
                 <a href="https://linkedin.com/in/satishreddy-medapati" target="_blank" title="LinkedIn">💼</a>
                 <a href="https://github.com/satishreddimedapati" target="_blank" title="GitHub">🐙</a>
-                <a href="https://www.kudosites.com/site/satish-reddy" target="_blank" title="Kudosites">🌐</a>
+                <a href="https://satishreddy-portfolio.vercel.app/" target="_blank" title="Portfolio WebApp">🌐</a>
               </div>
             </div>
 
