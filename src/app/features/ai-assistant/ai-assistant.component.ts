@@ -347,7 +347,7 @@ export class AiAssistantComponent {
     }
 
     if (q.includes('contact') || q.includes('hire') || q.includes('interview') || q.includes('email') || q.includes('phone')) {
-      return 'Satish is open for Senior Full Stack, Frontend Angular, and .NET Backend roles! Direct Email: medapatisatishreddy2026@gmail.com | Phone/WhatsApp: +91 7670995678. You can also leave a message in the Contact section of this webapp!';
+      return 'Satish is open for Senior Full Stack, Frontend Angular, and .NET Backend roles! Direct Email: medapatisatishreddy2025@gmail.com | Phone/WhatsApp: +91 7670995678. You can also leave a message in the Contact section of this webapp!';
     }
 
     return 'Satish Reddy Medapati is a Senior Full Stack Developer with 5+ years of Accenture enterprise experience in .NET Core, Angular, SQL Server, Azure, and GenAI integrations. Feel free to download his target resumes in the Resume Hub section!';
