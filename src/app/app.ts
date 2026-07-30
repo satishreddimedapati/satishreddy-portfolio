@@ -9,6 +9,7 @@ import { ProjectsGridComponent } from './features/projects-grid/projects-grid.co
 import { TechStackComponent } from './features/tech-stack/tech-stack.component';
 import { ResumeHubComponent } from './features/resume-hub/resume-hub.component';
 import { ContactGuestbookComponent } from './features/contact-guestbook/contact-guestbook.component';
+import { AiAssistantComponent } from './features/ai-assistant/ai-assistant.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 
 @Component({
@@ -24,22 +25,23 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     TechStackComponent,
     ResumeHubComponent,
     ContactGuestbookComponent,
+    AiAssistantComponent,
     FooterComponent
   ],
   template: `
     <div class="bg-mesh"></div>
 
-    <!-- 1. Landing Gate Modal (If not logged in as Guest or User) -->
+    <!-- 1. Landing Gate Modal -->
     @if (!authService.isLoggedIn()) {
       <app-landing-gate></app-landing-gate>
     }
 
-    <!-- 2. Private Admin Dashboard (Only visible if logged in with satish@admin.com) -->
+    <!-- 2. Private Admin Dashboard -->
     @if (authService.isAdmin()) {
       <app-admin-dashboard></app-admin-dashboard>
     }
 
-    <!-- 3. Main Portfolio WebApp (Visible once logged in as Guest or User) -->
+    <!-- 3. Main Portfolio WebApp -->
     @if (authService.isLoggedIn()) {
       <app-navbar></app-navbar>
       <main>
@@ -49,6 +51,10 @@ import { FooterComponent } from './shared/components/footer/footer.component';
         <app-resume-hub></app-resume-hub>
         <app-contact-guestbook></app-contact-guestbook>
       </main>
+
+      <!-- Floating Interactive AI Career Assistant -->
+      <app-ai-assistant></app-ai-assistant>
+
       <app-footer></app-footer>
     }
   `,

@@ -1,106 +1,120 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PortfolioDataService } from '../../core/services/portfolio-data.service';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <section id="about" class="hero-section">
-      <div class="hero-container" [class.video-active-grid]="isPlayingVideo()">
+    <section id="hero" class="hero-section">
+      <div class="container hero-container">
         
-        <!-- Left Column: Bio & Role Switcher -->
-        <div class="hero-content" [class.compact-content]="isPlayingVideo()">
-          <div class="section-badge">
-            <span class="pulse-dot"></span> 5+ YEARS ENTERPRISE SOFTWARE EXPERIENCE
+        <!-- Left Column: Intro & Impact Badges -->
+        <div class="hero-text-col">
+          
+          <div class="status-pill">
+            <span class="pulse-dot"></span>
+            <span>AVAILABLE FOR SENIOR FULL STACK / LEAD ROLES</span>
           </div>
 
-          <h1 class="hero-name">
-            Hi, I'm <span class="name-gradient">Satish Reddy Medapati</span>
+          <h1 class="hero-title">
+            Hi, I'm <span class="gradient-text">Satish Reddy Medapati</span> 👋
           </h1>
+          
+          <h2 class="hero-subtitle">
+            Senior Full Stack Engineer & Product Creator (5+ Yrs Exp @ Accenture)
+          </h2>
 
-          <div class="role-terminal glass-panel">
-            <span class="terminal-prefix">> current_role:</span>
-            <span class="role-text">{{ currentRole() }}</span>
+          <!-- Smart Executive Summary Capsule -->
+          <div class="executive-summary-box glass-panel">
+            <div class="summary-header">
+              <span class="summary-badge">⚡ THE ENGINEERING PROFILE</span>
+            </div>
+            <p class="summary-text">
+              High-output Senior Full Stack Engineer with <strong>5+ years at Accenture</strong> specializing in 
+              <strong>.NET Core 8 microservices</strong>, <strong>Angular 17/21 Signals</strong>, and <strong>Cloud AI Architecture</strong>. 
+              Creator of <strong>25+ production apps</strong> spanning financial ledgers, GenAI roadmaps, and automated media pipelines.
+            </p>
+
+            <div class="archetype-tags">
+              <span class="arch-tag">🏎️ High-Output Builder</span>
+              <span class="arch-tag">🤖 GenAI Integrator</span>
+              <span class="arch-tag">💳 FinTech & Ledger Architect</span>
+              <span class="arch-tag">☁️ Azure Cloud Practitioner</span>
+            </div>
           </div>
 
-          <p class="hero-bio">
-            Senior Full Stack Developer specializing in <strong>.NET Core, Angular (v8-v17), SQL Server</strong>, and <strong>Microsoft Azure</strong>. Proven track record at Accenture converting legacy enterprise monoliths into clean microservices, optimizing database retrieval speeds by 60%, and automating workflows with Python & AI integration.
-          </p>
+          <div class="hero-metrics">
+            <div class="metric-card glass-panel">
+              <span class="metric-num">5+</span>
+              <span class="metric-label">Years @ Accenture</span>
+            </div>
+            <div class="metric-card glass-panel">
+              <span class="metric-num">25+</span>
+              <span class="metric-label">Projects Built</span>
+            </div>
+            <div class="metric-card glass-panel">
+              <span class="metric-num">60%</span>
+              <span class="metric-label">SQL Latency Cut</span>
+            </div>
+            <div class="metric-card glass-panel">
+              <span class="metric-num">1,000+</span>
+              <span class="metric-label">Students Reached</span>
+            </div>
+          </div>
 
           <div class="hero-actions">
-            <a href="#resumes" class="btn-primary">
-              <span>📄 View Professional Resumes</span>
+            <a href="#projects" class="btn-primary">
+              <span>Explore 25+ Projects 🚀</span>
             </a>
-            <a href="#projects" class="btn-secondary">
-              <span>🚀 Explore 25+ Projects</span>
+            <a href="#resumes" class="btn-secondary">
+              <span>View Resumes 📄</span>
             </a>
           </div>
 
-          <!-- Quick Metrics -->
-          <div class="hero-stats glass-panel">
-            <div class="stat-item">
-              <span class="stat-num">5+</span>
-              <span class="stat-label">Years Exp</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <span class="stat-num">25+</span>
-              <span class="stat-label">Total Projects</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <span class="stat-num">35%</span>
-              <span class="stat-label">App Speed Gain</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-              <span class="stat-num">60%</span>
-              <span class="stat-label">SQL Latency Cut</span>
-            </div>
-          </div>
         </div>
 
-        <!-- Right Column: Horizontally & Vertically Expanded Media Card -->
-        <div class="hero-visual">
-          <div class="avatar-card glass-panel" [class.expanded-card]="isPlayingVideo()">
+        <!-- Right Column: Widescreen Expandable Video Intro & Fitted Avatar -->
+        <div class="hero-media-col">
+          <div class="avatar-card glass-panel" [class.expanded]="isVideoPlaying">
             
-            @if (isPlayingVideo()) {
+            @if (isVideoPlaying) {
               <div class="video-container">
                 <video 
-                  src="satish_intro.mp4" 
+                  #videoPlayer
                   controls 
-                  autoplay
-                  (ended)="onVideoEnded()" 
-                  class="intro-video-element">
-                  Your browser does not support HTML5 video.
+                  autoplay 
+                  src="satish_intro.mp4" 
+                  class="hero-video"
+                  (ended)="onVideoEnded()">
                 </video>
-                <button class="close-video-btn" (click)="stopVideo()">
-                  ✕ Close Theater View
-                </button>
+                <button class="btn-close-video" (click)="stopVideo()">✕ Close Video</button>
               </div>
             } @else {
-              <div class="avatar-wrapper">
+              <div class="avatar-wrapper" (click)="playVideo()">
                 <img src="satish_pic.jpg" alt="Satish Reddy Medapati" class="avatar-img" />
-                <div class="avatar-glow"></div>
-              </div>
-
-              <div class="intro-video-overlay" (click)="playVideo()">
-                <button class="play-btn">
-                  <span class="play-icon">▶</span>
-                </button>
-                <div class="video-info">
-                  <span class="video-title">Play Self-Intro Video 🎥</span>
-                  <span class="video-subtitle">Click to expand & play Satish's video (Plays once)</span>
+                <div class="play-overlay">
+                  <div class="play-btn">
+                    <span class="play-icon">▶</span>
+                  </div>
+                  <span class="play-text">Watch 1-Min Video Intro</span>
                 </div>
               </div>
             }
 
-            <!-- Floating Tech Badges -->
-            <div class="badge-float badge-dotnet">.NET Core 8</div>
-            <div class="badge-float badge-angular">Angular 17</div>
-            <div class="badge-float badge-azure">Azure Cloud</div>
-            <div class="badge-float badge-ai">GenAI / OpenAI</div>
+            <div class="media-footer">
+              <div class="person-info">
+                <h3 class="person-name">Satish Reddy Medapati</h3>
+                <p class="person-title">Hyderabad, India • Accenturite</p>
+              </div>
+              <div class="social-mini-links">
+                <a href="https://linkedin.com/in/satishreddy-medapati" target="_blank" title="LinkedIn">💼</a>
+                <a href="https://github.com/satishreddimedapati" target="_blank" title="GitHub">🐙</a>
+                <a href="https://satishreddy-portfolio.vercel.app/" target="_blank" title="Portfolio WebApp">🌐</a>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -109,21 +123,37 @@ import { CommonModule } from '@angular/common';
   `,
   styles: [`
     .hero-section {
-      padding: 110px 20px 60px;
-      max-width: 1320px;
-      margin: 0 auto;
+      padding: 100px 20px 60px;
+      position: relative;
     }
     .hero-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       gap: 40px;
       align-items: center;
-      transition: all 0.4s ease-in-out;
+      max-width: 1250px;
+      margin: 0 auto;
+      transition: all 0.4s ease;
     }
-    .hero-container.video-active-grid {
-      grid-template-columns: 0.7fr 1.3fr;
+    .hero-text-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--accent-green);
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      width: fit-content;
+    }
     .pulse-dot {
       width: 8px;
       height: 8px;
@@ -131,49 +161,69 @@ import { CommonModule } from '@angular/common';
       background: var(--accent-green);
       box-shadow: 0 0 10px var(--accent-green);
     }
-    .hero-name {
-      font-size: 3rem;
+    .hero-title {
+      font-size: 2.8rem;
       font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 16px;
+      line-height: 1.15;
     }
-    .name-gradient {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: 600;
     }
-    .role-terminal {
-      padding: 12px 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-mono);
-      font-size: 1.1rem;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      background: rgba(15, 23, 42, 0.8);
+
+    /* Smart Executive Summary Box */
+    .executive-summary-box {
+      padding: 20px;
+      border-radius: 20px;
       border-color: var(--primary-glow);
+      background: rgba(15, 23, 42, 0.85);
     }
-    .terminal-prefix { color: var(--accent-green); }
-    .role-text { color: var(--primary); font-weight: 700; }
-    .hero-bio {
+    .summary-header { margin-bottom: 10px; }
+    .summary-badge { font-size: 0.72rem; font-family: var(--font-mono); color: var(--primary); font-weight: 700; }
+    .summary-text { font-size: 0.92rem; color: var(--text-main); line-height: 1.6; margin-bottom: 14px; }
+    .archetype-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .arch-tag {
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 28px;
+      font-weight: 600;
     }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .metric-card {
+      padding: 14px 10px;
+      text-align: center;
+      border-radius: 16px;
+    }
+    .metric-num {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
     .hero-actions {
       display: flex;
       gap: 16px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
     }
     .btn-primary {
       padding: 14px 28px;
       border-radius: 30px;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: #000;
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
       box-shadow: 0 4px 20px var(--primary-glow);
       transition: transform 0.2s;
@@ -187,58 +237,56 @@ import { CommonModule } from '@angular/common';
       color: var(--text-main);
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.2s;
-    }
-    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-
-    .hero-stats {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 16px 24px;
-      border-radius: 16px;
-    }
-    .stat-item { text-align: center; }
-    .stat-num {
-      display: block;
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--primary);
-    }
-    .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      font-family: var(--font-mono);
-    }
-    .stat-divider {
-      width: 1px;
-      height: 30px;
-      background: var(--border-subtle);
     }
 
+    /* Media Col & Video Theater */
     .avatar-card {
-      position: relative;
-      padding: 14px;
-      border-radius: 24px;
-      text-align: center;
-      transition: all 0.3s ease;
+      padding: 16px;
+      border-radius: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: all 0.4s ease;
     }
     .avatar-wrapper {
       position: relative;
-      width: 100%;
-      height: 500px;
       border-radius: 20px;
       overflow: hidden;
-      background: #000;
+      cursor: pointer;
+      aspect-ratio: 4/3;
+      background: #0f172a;
     }
     .avatar-img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
-      border-radius: 20px;
-      display: block;
+      object-position: top center;
     }
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(9, 13, 22, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .avatar-wrapper:hover .play-overlay { opacity: 1; }
+    .play-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+    .play-icon { color: #000; font-size: 1.2rem; margin-left: 2px; }
+    .play-text { font-size: 0.85rem; font-weight: 700; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
     .video-container {
       position: relative;
@@ -247,109 +295,54 @@ import { CommonModule } from '@angular/common';
       border-radius: 20px;
       overflow: hidden;
       background: #000;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
     }
-    .intro-video-element {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 20px;
-      display: block;
-      background: #000;
-    }
-    .close-video-btn {
+    .hero-video { width: 100%; height: 100%; object-fit: contain; }
+    .btn-close-video {
       position: absolute;
-      top: 14px;
-      right: 14px;
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.8rem;
-      cursor: pointer;
-      z-index: 10;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .intro-video-overlay {
-      position: absolute;
-      bottom: 24px;
-      left: 24px;
-      right: 24px;
-      padding: 14px 20px;
-      background: rgba(9, 13, 22, 0.92);
-      backdrop-filter: blur(12px);
-      border-radius: 16px;
-      border: 1px solid var(--primary-glow);
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .intro-video-overlay:hover { transform: scale(1.02); }
-    .play-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: var(--primary);
-      border: none;
-      color: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.05rem;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--primary-glow);
-    }
-    .video-info { text-align: left; }
-    .video-title { display: block; font-weight: 700; font-size: 0.9rem; color: #fff; }
-    .video-subtitle { font-size: 0.72rem; color: var(--text-muted); }
-
-    .badge-float {
-      position: absolute;
+      top: 12px;
+      right: 12px;
       padding: 6px 14px;
       border-radius: 20px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      font-family: var(--font-mono);
-      background: rgba(16, 24, 40, 0.9);
-      border: 1px solid var(--border-glow);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      background: rgba(0,0,0,0.7);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
     }
-    .badge-dotnet { top: -12px; left: -12px; color: var(--accent-purple); }
-    .badge-angular { top: -12px; right: -12px; color: #f43f5e; }
-    .badge-azure { bottom: 95px; left: -18px; color: var(--primary); }
-    .badge-ai { bottom: 95px; right: -18px; color: var(--accent-green); }
 
-    @media (max-width: 900px) {
-      .hero-section { padding-top: 100px; }
-      .hero-container, .hero-container.video-active-grid { grid-template-columns: 1fr; gap: 30px; }
-      .hero-name { font-size: 2.2rem; }
-      .avatar-wrapper { height: 360px; }
-      .video-container { height: 360px; }
-      .hero-stats { flex-wrap: wrap; gap: 16px; }
-      .stat-divider { display: none; }
-      .badge-float { display: none; }
+    .media-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px;
+    }
+    .person-name { font-size: 1rem; font-weight: 700; }
+    .person-title { font-size: 0.78rem; color: var(--text-muted); }
+    .social-mini-links { display: flex; gap: 12px; font-size: 1.2rem; }
+
+    @media (min-width: 1024px) {
+      .hero-container:has(.expanded) {
+        grid-template-columns: 1fr 1.3fr;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero-container { grid-template-columns: 1fr; }
+      .hero-metrics { grid-template-columns: repeat(2, 1fr); }
     }
   `]
 })
 export class HeroComponent {
-  readonly currentRole = signal('Senior Full Stack Developer (.NET & Angular)');
-  readonly isPlayingVideo = signal(false);
+  isVideoPlaying = false;
 
   playVideo() {
-    this.isPlayingVideo.set(true);
+    this.isVideoPlaying = true;
   }
 
   stopVideo() {
-    this.isPlayingVideo.set(false);
+    this.isVideoPlaying = false;
   }
 
   onVideoEnded() {
-    this.isPlayingVideo.set(false);
+    this.isVideoPlaying = false;
   }
 }

@@ -29,7 +29,7 @@ import { AuthService } from '../../core/services/auth.service';
               <span class="info-icon">📧</span>
               <div>
                 <span class="info-label">Direct Email</span>
-                <a href="mailto:medapatisatishreddy2026@gmail.com" class="info-val">medapatisatishreddy2026@gmail.com</a>
+                <a href="mailto:medapatisatishreddy2025@gmail.com" class="info-val">medapatisatishreddy2025@gmail.com</a>
               </div>
             </div>
 
